@@ -4,34 +4,42 @@ from dash import html
 from energies import energies
 from population import population
 from deces import deces
+from NHAJ_BMO_and_attractive_zone import bmo
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__,  title="Delta", suppress_callback_exceptions=True) # , external_stylesheets=external_stylesheets)
+# , external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__,  title="Delta", suppress_callback_exceptions=True)
 server = app.server
-pop = population.WorldPopulationStats(app)
-nrg = energies.Energies(app)
-dec = deces.Deces(app)
+
+pop  = population.WorldPopulationStats(app)
+nrg  = energies.Energies(app)
+dec  = deces.Deces(app)
+bmo_ = bmo.Bmo(app)
 
 main_layout = html.Div([
-    html.Div(className = "row",
-             children=[ 
+    html.Div(className="row",
+             children=[
                  dcc.Location(id='url', refresh=False),
                  html.Div(className="two columns",
-                          children = [
+                          children=[
                               html.Center(html.H2("Δelta δata")),
-                              dcc.Link(html.Button("Prix d'énergies", style={'width':"100%"}), href='/energies'),
+                              dcc.Link(html.Button("Prix d'énergies", style={
+                                       'width': "100%"}), href='/energies'),
                               html.Br(),
-                              dcc.Link(html.Button('Natalité vs revenus', style={'width':"100%"}), href='/population'),
+                              dcc.Link(html.Button('Natalité vs revenus', style={
+                                       'width': "100%"}), href='/population'),
                               html.Br(),
-                              dcc.Link(html.Button('Décès journaliers', style={'width':"100%"}), href='/deces'),
+                              dcc.Link(html.Button('Décès journaliers', style={
+                                       'width': "100%"}), href='/deces'),
                               html.Br(),
                               html.Br(),
                               html.Br(),
-                              html.Center(html.A('Code source', href='https://github.com/oricou/delta')),
+                              html.Center(
+                                  html.A('Code source', href='https://github.com/oricou/delta')),
                           ]),
                  html.Div(id='page_content', className="ten columns"),
-            ]),
+             ]),
 ])
 
 
@@ -57,6 +65,8 @@ app.validation_layout = html.Div([
 ])
 
 # Update the index
+
+
 @app.callback(dash.dependencies.Output('page_content', 'children'),
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):

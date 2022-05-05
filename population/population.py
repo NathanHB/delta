@@ -239,5 +239,5 @@ class WorldPopulationStats():
 
 
 if __name__ == '__main__':
-    ws = WorldStats()
+    ws = WorldPopulationStats()
     ws.run(port=8055)
